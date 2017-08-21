@@ -7,23 +7,30 @@
 	margin-bottom: 30px;
 	text-shadow: 1px 1px gainsboro;
 }
-
+/*
 #nadpis:active {
-	
-
-}
+	color: green;
+}*/
 
 body {
   background: linear-gradient(to right, darkgoldenrod,darkkhaki,darkgoldenrod);
  }
 
 aside {
-	padding-left: 30px;
+	margin-left: 30px;
 	text-align: center;
 }
 
+aside button {
+	margin-left: 32px;
+}
+
+aside h3 {
+	padding-left: 30px;
+}
+
 aside li {
-	list-style-type: none;
+	list-style-type: none;	
 }
 
 #start {
@@ -34,7 +41,7 @@ aside li {
 	font-weight: bold;
 	font-size: 1.5em;
 	margin-bottom: 70px;
-	transition: all 0.3s;
+	/*transition: all 0.3s;*/
 }
 
 #start:active {
@@ -46,13 +53,22 @@ aside li {
 	text-decoration: underline;
 }
 
+#plocha {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 #hra {
-	float: left;
 	width: 1000px;
-	height: 700px;
+	height: 704px;
 	border: 1px solid black;
 	background-color: yellowgreen;
 	position: relative;
+}
+
+#tabule {
+	display: flex;
+	justify-content: space-between;
 }
 
 #hrac1, #hrac2 {
@@ -60,16 +76,7 @@ aside li {
 	background-color: lightyellow;
 	width: 200px;
 	height: 80px;
-	margin: 10px;
-}
-
-#hrac1 {
-	float: left;
-}
-
-#hrac2 {
-	float: right;
-	
+	margin: 10px 10px 0 10px;
 }
 
 #hriste {
@@ -80,7 +87,6 @@ aside li {
 	height: 200px; testovaci rozmery */
 	height: 590px;
 	margin: 10px;
-	margin-top: 100px;
 }
 
 #micek {
