@@ -60,7 +60,7 @@ aside li {
 
 #hra {
 	width: 1000px;
-	height: 704px;
+	height: 700px;
 	border: 1px solid black;
 	background-color: yellowgreen;
 	position: relative;
@@ -71,12 +71,19 @@ aside li {
 	justify-content: space-between;
 }
 
-#hrac1, #hrac2 {
+.hrac {
 	border: 1px solid black;
 	background-color: lightyellow;
 	width: 200px;
-	height: 80px;
+	height: 74px;
 	margin: 10px 10px 0 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#skore1, #skore2 {
+	font-size: 300%;
 }
 
 #hriste {
