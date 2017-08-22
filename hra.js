@@ -1,6 +1,5 @@
-const HRAJEM = true; 
-// prepina ruzne mody testovani
-// vymazat ve finalni verzi
+const HRAJEM = false;
+// testovaci konstanta
 
 var hra = {
 
@@ -8,11 +7,16 @@ var hra = {
 		rychlost: 5,
 		smerX: Math.random() > 0.5 ? -3 : 3,
 		smerY: Math.random() > 0.5 ? -0.5 : 0.5,
+		vykresli() {
+			this.ja.style.left = this.posX+"px"; 
+			this.ja.style.top = this.posY+"px";
+		},
 		vratNaZacatek() {
-			this.posX = this.startposX;
-			this.posY = this.startposY;
+			this.posX = this.startPosX;
+			this.posY = this.startPosY;
 			this.smerX = Math.random() > 0.5 ? -3 : 3; 
-			this.smerY = Math.random() > 0.5 ? -0.5 : 0.5; 
+			this.smerY = Math.random() > 0.5 ? -0.5 : 0.5;
+			this.vykresli();
 		}
 	},
 
@@ -47,8 +51,8 @@ function nastavPoziciObjektu (nepouzita_promenna_objekt, idcko) {
 	objekt.posY = objekt.ja.offsetTop;
 	objekt.sirka = objekt.ja.offsetWidth;
 	objekt.vyska = objekt.ja.offsetHeight;
-	objekt.startposX = objekt.posX;
-	objekt.startposY = objekt.posY;
+	objekt.startPosX = objekt.posX;
+	objekt.startPosY = objekt.posY;
 } // pozice micku a palek
 // idcko je cesky vyraz pro slovo id - cestina mi pomaha vyhnout se klicovym slovum
 
@@ -67,7 +71,6 @@ hra.hraj = function(){
 hra.zmenStav = function(){
 	hra.odstartovana = !hra.odstartovana;
 	startTlacitko.innerHTML = hra.odstartovana ? "Stop" : "Stopnuto!";
-	console.log(hra.interval);
 	if (hra.odstartovana) {
 		hra.interval = setInterval (hra.hraj, 1);
 	} else {
@@ -80,62 +83,72 @@ hra.pohniMickem = function() {
 		 palka1 = hra.palka1,
 		 palka2 = hra.palka2;
 	if (mic.posX < palka1.posX + palka1.sirka &&
+		mic.smerX < 0 &&
+		mic.posX >= palka1.posX &&
 		mic.posY + mic.vyska > palka1.posY &&
 		mic.posY < palka1.posY + palka1.vyska
-		) { // odraz od leve palky
+		) { 
 		mic.smerX = -mic.smerX;
-	} else if (mic.posX < 0) { // leva zed
+	} else if (mic.posX < 0) {
+		if (HRAJEM) {   //vymaz 
 		hra.skore2.nastav (++hra.skore2.hodnota);
 		mic.vratNaZacatek();
+		} else { // vymaz
+			mic.smerX = -mic.smerX; // vymaz
+		} // vymaz
 	}	
 	if (mic.posX + mic.sirka > palka2.posX &&
+		mic.smerX > 0 &&
+		mic.posX + mic.sirka <= palka2.posX + palka2.sirka &&
 		mic.posY + mic.vyska > palka2.posY &&
 		mic.posY < palka2.posY + palka2.vyska
-		) {  // odraz od prave palky
+		) {  
 		mic.smerX = -mic.smerX;
-	} else if (mic.posX + mic.sirka > hra.hriste.sirka) { // prava zed
+	} else if (mic.posX + mic.sirka > hra.hriste.sirka) { 
+		if (HRAJEM) {   //vymaz
 		hra.skore1.nastav (++hra.skore1.hodnota);
 		mic.vratNaZacatek();
+		} else { // vymaz
+			mic.smerX = -mic.smerX; // vymaz
+		} // vymaz
 	}
-	if (mic.posY < 0) { // odraz od horni zdi
+	if (mic.posY < 0) { 
 		mic.smerY = -mic.smerY;
 	}
-	if (mic.posY + mic.vyska > hra.hriste.vyska) { // odraz od spodni zdi
+	if (mic.posY + mic.vyska > hra.hriste.vyska) { 
 		mic.smerY = -mic.smerY;
 	}
 	mic.posX += mic.smerX;
 	mic.posY += mic.smerY;
-	mic.ja.style.left = mic.posX+"px";
-	mic.ja.style.top = mic.posY+"px";
-	mic.ja.style.display = "block";
+	mic.vykresli();
 };
 
 hra.pohniPalkami = function() {
 	const klavesy = hra.klavesy,
 		  palka1 = hra.palka1,
 		  palka2 = hra.palka2;
-	if (klavesy["w"] || klavesy["W"]) { // leva palka nahoru
+	if (klavesy["w"] || klavesy["W"]) { 
 		palka1.posY -= 2;
-		if (palka1.posY < 0) { // pokud je uz na maximu
+		if (palka1.posY < 0) { 
 			palka1.posY = 0; 
 		}
 		palka1.ja.style.top = palka1.posY+"px";
 	}
-	if (klavesy["s"] || klavesy["S"]) { // leva palka dolu
+	if (klavesy["s"] || klavesy["S"]) { 
 		palka1.posY += 2;
-		if (palka1.posY > hra.hriste.vyska - palka1.vyska) { // pokud je uz na maximu
+		if (palka1.posY > hra.hriste.vyska - palka1.vyska) { 
 			palka1.posY = hra.hriste.vyska - palka1.vyska; 
 		}
 		palka1.ja.style.top = palka1.posY+"px";
 	}
-	if (klavesy["ArrowUp"]) { // prava nahoru
+	if (klavesy["ArrowUp"]) { 
 		palka2.posY -= 2;
 		if (palka2.posY < 0) {
 			palka2.posY = 0; 
 		}
 		palka2.ja.style.top = palka2.posY+"px";
 	}
-	if (klavesy["ArrowDown"]) { // prava dolu
+	if (klavesy["ArrowDown"]) { 
 		palka2.posY += 2;
 		if (palka2.posY > hra.hriste.vyska - palka2.vyska) {
 			palka2.posY = hra.hriste.vyska - palka2.vyska; 
@@ -153,7 +166,6 @@ hra.restart = function() { // vse odznovu
 	hra.skore1.nastav(0);
 	hra.skore2.nastav(0);
 	hra.micek.vratNaZacatek();
-	hra.micek.ja.style.display = "none";
 }
 
 function zacniHru() {
