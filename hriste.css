@@ -33,20 +33,34 @@ aside li {
 	list-style-type: none;	
 }
 
-#start {
-	background: linear-gradient(to bottom, teal, #005050);
-	border: 8px teal outset;
+button {
 	width: 150px;
 	height: 50px;
 	font-weight: bold;
 	font-size: 1.5em;
+}
+
+#start {
 	margin-bottom: 70px;
+	background: linear-gradient(to bottom, teal, #005050);
+	border: 8px teal outset;
 	/*transition: all 0.3s;*/
 }
 
 #start:active {
 	border-style: inset;
 	background: linear-gradient(to top, teal, #005050);
+}
+
+#reset {
+	margin-top: 270px;
+	background: linear-gradient(to bottom, #65401a, #412911);
+	border: 8px #65401a outset;
+}
+
+#reset:active {
+	border-style: inset;
+	background: linear-gradient(to top, #65401a, #412911);
 }
 
 .podtrhni {
@@ -111,8 +125,10 @@ aside li {
 	position: absolute;
 	background: darkorange;
 	top: calc(50% - 70px);
+	/*top: 100px; /*ladeni*/
 	width: 15px;
 	height: 140px;
+	/*height: 350px; /*ladeni*/	
 	border: 5px darkgoldenrod outset;
 }
 
