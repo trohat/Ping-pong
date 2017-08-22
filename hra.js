@@ -1,7 +1,7 @@
 const HRAJEM = true;
 // testovaci konstanta
 
-const SIRKA = 45;
+const SIRKA = 43;
 // kam az testovat sirku palky 
 // (odviji se od max rychlosti micku)
 
@@ -171,7 +171,7 @@ hra.pohniPalkami = function() {
 		}
 		palka1.ja.style.top = palka1.posY+"px";
 	}
-	if (klavesy["a"] || klavesy["A"]) { 
+	/*if (klavesy["a"] || klavesy["A"]) { 
 		palka1.posX -= 2;
 		if (palka1.posX < 0) { 
 			palka1.posX = 0; 
@@ -184,7 +184,7 @@ hra.pohniPalkami = function() {
 			palka1.posX = hra.hriste.sirka - palka1.sirka; 
 		}
 		palka1.ja.style.left = palka1.posX+"px";
-	}
+	}*/
 	if (klavesy["ArrowUp"]) { 
 		palka2.posY -= 2;
 		if (palka2.posY < 0) {
@@ -199,7 +199,7 @@ hra.pohniPalkami = function() {
 		}
 		palka2.ja.style.top = palka2.posY+"px";
 	}
-	if (klavesy["ArrowLeft"]) { 
+	/*if (klavesy["ArrowLeft"]) { 
 		palka2.posX -= 2;
 		if (palka2.posX < 0) {
 			palka2.posX = 0; 
@@ -212,7 +212,7 @@ hra.pohniPalkami = function() {
 			palka2.posX = hra.hriste.sirka - palka2.sirka; 
 		}
 		palka2.ja.style.left = palka2.posX+"px";
-	}
+	}*/
 };
 
 hra.restart = function() { // vse odznovu
