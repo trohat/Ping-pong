@@ -1,4 +1,4 @@
-const HRAJEM = true;
+const HRAJEM = false;
 // testovaci konstanta
 
 const SIRKA = 45;
@@ -52,6 +52,8 @@ var hra = {
 	},
 	interval: 0,
 	ostartovana: false,
+	ai1: false,
+	ai2: false, 
 
 	vykresli (objekt) {
 		objekt.ja.style.left = objekt.posX+"px"; 
@@ -68,42 +70,6 @@ var hra = {
 			hra.vykresli(objekt);
 	}	 
 }; // globalni objekt ve kterem jsou schovane vsechny mensi objekty
-
-function nastavPoziciObjektu (nepouzita_promenna_objekt, idcko) {   
-	var objekt = hra[idcko]; // objekt nakonec zvladnu precist pomoci idcka, takze nemusel byt v parametrech
-	objekt.ja = document.getElementById(idcko),
-	objekt.posX = objekt.ja.offsetLeft;
-	objekt.posY = objekt.ja.offsetTop;
-	objekt.sirka = objekt.ja.offsetWidth;
-	objekt.vyska = objekt.ja.offsetHeight;
-	objekt.startPosX = objekt.posX;
-	objekt.startPosY = objekt.posY;
-} // pozice micku a palek
-// idcko je cesky vyraz pro slovo id - cestina mi pomaha vyhnout se klicovym slovum
-
-function nastavPoziciHriste(hriste) {
-	hriste.ja = document.getElementById("hriste");
-	hriste.sirka = hriste.ja.clientWidth;
-	hriste.vyska = hriste.ja.clientHeight;
-} // potrebuje samostatnou funkci, protoze pouziva clientWidth misto offsetWidth
-
-hra.hraj = function(){
-	hra.pohniMickem();
-	hra.zapojAI();
-	hra.zapojAI2();
-	hra.pohniPalkami();
-	if (hra.klavesy["x"]) { hra.restart(); hra.zmenStav(); } // testovaci radek
-}; // cyklus spusteny setIntervalem ve funkci zmenStav
-
-hra.zmenStav = function(){
-	hra.odstartovana = !hra.odstartovana;
-	startTlacitko.innerHTML = hra.odstartovana ? "Stop" : "Stopnuto!";
-	if (hra.odstartovana) {
-		hra.interval = setInterval (hra.hraj, 1);
-	} else {
-		clearInterval(hra.interval);
-	}
-}; // odstartuje hru - nebo ji zastavi, pokud je uz ostartovana
 
 hra.pohniMickem = function() {
 	const mic = hra.micek,
@@ -155,7 +121,7 @@ hra.pohniMickem = function() {
 	hra.vykresli(mic);
 };
 
-hra.zapojAI = function () {
+hra.pouzijAI1 = function () {
 	const pulPalky = hra.palka1.vyska / 2;
 	const pulHriste = hra.hriste.sirka / 2;
 	if (hra.micek.posY + hra.micek.vyska < hra.palka1.posY + pulPalky &&
@@ -174,7 +140,7 @@ hra.zapojAI = function () {
 	}
 };
 
-hra.zapojAI2 = function () {
+hra.pouzijAI2 = function () {
 	const pulPalky = hra.palka2.vyska / 2;
 	const pulHriste = hra.hriste.sirka / 2;
 	if (hra.micek.posY + hra.micek.vyska < hra.palka2.posY + pulPalky
@@ -253,6 +219,49 @@ hra.pohniPalkami = function() {
 	}*/
 };
 
+function nastavPoziciObjektu (nepouzita_promenna_objekt, idcko) {   
+	var objekt = hra[idcko]; // objekt nakonec zvladnu precist pomoci idcka, takze nemusel byt v parametrech
+	objekt.ja = document.getElementById(idcko),
+	objekt.posX = objekt.ja.offsetLeft;
+	objekt.posY = objekt.ja.offsetTop;
+	objekt.sirka = objekt.ja.offsetWidth;
+	objekt.vyska = objekt.ja.offsetHeight;
+	objekt.startPosX = objekt.posX;
+	objekt.startPosY = objekt.posY;
+} // pozice micku a palek
+// idcko je cesky vyraz pro slovo id - cestina mi pomaha vyhnout se klicovym slovum
+
+function nastavPoziciHriste(hriste) {
+	hriste.ja = document.getElementById("hriste");
+	hriste.sirka = hriste.ja.clientWidth;
+	hriste.vyska = hriste.ja.clientHeight;
+} // potrebuje samostatnou funkci, protoze pouziva clientWidth misto offsetWidth
+
+hra.zacniHru = function() {
+	nastavPoziciHriste (hra.hriste);
+	nastavPoziciObjektu (hra.micek, "micek");
+	nastavPoziciObjektu (hra.palka1, "palka1");
+	nastavPoziciObjektu (hra.palka2, "palka2");
+}
+
+hra.hraj = function(){
+	hra.pohniMickem();
+	if (hra.ai1) { hra.pouzijAI1(); }
+	if (hra.ai2) { hra.pouzijAI2(); }
+	hra.pohniPalkami();
+	if (hra.klavesy["x"]) { hra.restart(); hra.zmenStav(); } // testovaci radek
+}; // cyklus spusteny setIntervalem ve funkci zmenStav
+
+hra.zmenStav = function(){
+	hra.odstartovana = !hra.odstartovana;
+	startTlacitko.innerHTML = hra.odstartovana ? "Stop" : "Stopnuto!";
+	if (hra.odstartovana) {
+		hra.interval = setInterval (hra.hraj, 1);
+	} else {
+		clearInterval(hra.interval);
+	}
+}; // odstartuje hru - nebo ji zastavi, pokud je uz ostartovana
+
 hra.restart = function() { // vse odznovu
 	if (hra.odstartovana) {
 		clearInterval (hra.interval);
@@ -266,20 +275,48 @@ hra.restart = function() { // vse odznovu
 	hra.vratNaZacatek(hra.palka2);
 }
 
-hra.zacniHru = function() {
-	nastavPoziciHriste (hra.hriste);
-	nastavPoziciObjektu (hra.micek, "micek");
-	nastavPoziciObjektu (hra.palka1, "palka1");
-	nastavPoziciObjektu (hra.palka2, "palka2");
-}
+hra.zapojAI1 = function () {
+	hra.ai1 = !hra.ai1;
+	ai1Tlacitko.innerHTML = hra.ai1 ? "Vrať hráče 1<br>do hry!" : "Zapni počítač místo hráče 1";
+	let hrac = document.getElementById("hrac1");
+	let skore = document.getElementById("skore1");
+	if (hra.ai1) {
+		hrac.innerHTML = "Počítač"
+		hrac.style.color = "grey";
+		skore.style.color = "grey";
+	} else {
+		hrac.innerHTML = "Hráč 1"
+		hrac.style.color = "black";
+		skore.style.color = "black";
+	}	
+};
 
-hra.zacniHru();
+hra.zapojAI2 = function () {
+	hra.ai2 = !hra.ai2;
+	ai2Tlacitko.innerHTML = hra.ai2 ? "Vrať hráče 2<br>do hry!" : "Zapni počítač místo hráče 2";
+	let hrac = document.getElementById("hrac2");
+	let skore = document.getElementById("skore2");
+	if (hra.ai2) {
+		hrac.innerHTML = "Počítač"
+		hrac.style.color = "grey";
+		skore.style.color = "grey";
+	} else {
+		hrac.innerHTML = "Hráč 2"
+		hrac.style.color = "black";
+		skore.style.color = "black";
+	}	
+};
 
 const startTlacitko = document.getElementById("start");
 const resetTlacitko = document.getElementById("reset");
+const ai1Tlacitko = document.getElementById("ai1");
+const ai2Tlacitko = document.getElementById("ai2");
 
 startTlacitko.addEventListener("click", hra.zmenStav);
 resetTlacitko.addEventListener("click", hra.restart);
+ai1Tlacitko.addEventListener("click", hra.zapojAI1);
+ai2Tlacitko.addEventListener("click", hra.zapojAI2);
+
 
 document.addEventListener("keydown", function(event) {
 	hra.klavesy[event.key] = true;
@@ -288,6 +325,8 @@ document.addEventListener("keydown", function(event) {
 document.addEventListener("keyup", function(event) {
 	hra.klavesy[event.key] = false;
 });
+
+hra.zacniHru();
 
 //asi by to šlo jeste lepe pospojovat objektove nebo pomocí ES6 trid (napr. bych vyuzil dedicnost -
 //nastavPozici by mohla byt metoda predka a ostatni by z ní dedili, a treba hriste by si ji predefinovalo
