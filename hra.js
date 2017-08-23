@@ -1,7 +1,7 @@
 const HRAJEM = true;
 // testovaci konstanta
 
-const SIRKA = 43;
+const SIRKA = 45;
 // kam az testovat sirku palky 
 // (odviji se od max rychlosti micku)
 
@@ -89,6 +89,8 @@ function nastavPoziciHriste(hriste) {
 
 hra.hraj = function(){
 	hra.pohniMickem();
+	hra.zapojAI();
+	hra.zapojAI2();
 	hra.pohniPalkami();
 	if (hra.klavesy["x"]) { hra.restart(); hra.zmenStav(); } // testovaci radek
 }; // cyklus spusteny setIntervalem ve funkci zmenStav
@@ -151,6 +153,42 @@ hra.pohniMickem = function() {
 	mic.posX += mic.smerX;
 	mic.posY += mic.smerY;
 	hra.vykresli(mic);
+};
+
+hra.zapojAI = function () {
+	const pulPalky = hra.palka1.vyska / 2;
+	const pulHriste = hra.hriste.sirka / 2;
+	if (hra.micek.posY + hra.micek.vyska < hra.palka1.posY + pulPalky &&
+		hra.micek.posX + hra.micek.sirka < pulHriste
+		) {
+		hra.klavesy["W"] = true;
+	} else {
+		hra.klavesy["W"] = false;
+	}
+	if (hra.micek.posY > hra.palka1.posY + pulPalky &&
+		hra.micek.posX + hra.micek.sirka < pulHriste
+		) {
+		hra.klavesy["S"] = true;
+	} else {
+		hra.klavesy["S"] = false;
+	}
+};
+
+hra.zapojAI2 = function () {
+	const pulPalky = hra.palka2.vyska / 2;
+	const pulHriste = hra.hriste.sirka / 2;
+	if (hra.micek.posY + hra.micek.vyska < hra.palka2.posY + pulPalky
+		&& hra.micek.posX > pulHriste) {
+		hra.klavesy["ArrowUp"] = true;
+	} else {
+		hra.klavesy["ArrowUp"] = false;
+	}
+	if (hra.micek.posY > hra.palka2.posY + pulPalky
+		&& hra.micek.posX > pulHriste) {
+		hra.klavesy["ArrowDown"] = true;
+	} else {
+		hra.klavesy["ArrowDown"] = false;
+	}
 };
 
 hra.pohniPalkami = function() {
