@@ -1,4 +1,4 @@
-const HRAJEM = false;
+const HRAJEM = true;
 // testovaci konstanta
 
 const SIRKA = 45;
@@ -7,6 +7,8 @@ const SIRKA = 45;
 
 const POCX = 3; // pocatecni rychlost X
 const POCY = 0; // pocatecni rychlost Y
+
+var pocetOdrazu = 0;
 
 var hra = {
 
@@ -17,14 +19,18 @@ var hra = {
 
 		odraz (palka) {
 			let stredM = this.posY + this.vyska/2;
-			let vrsekP = palka.posY;
+			let vrsekP = palka.posY + palka.vyska + this.vyska/2;
 			let stredP = palka.posY + palka.vyska/2; 
-			let uhel = (stredP - stredM) / (stredP - vrsekP);
+			let uhel = (stredP - stredM) / (vrsekP - stredP);
 			uhel *= 75;
+			console.log (uhel);
 			uhel = uhel * Math.PI / 180;
 			this.smerX = Math.cos(uhel) * this.rychlost;
 			this.smerY = Math.sin(uhel) * this.rychlost;
 			this.smerY = - this.smerY; // kvuli logice v goniometrii je tohle az na konci
+			pocetOdrazu++;
+			console.log (pocetOdrazu);
+			if (pocetOdrazu>1) alert (pocetOdrazu);
 		}
 	},
 
@@ -118,6 +124,10 @@ hra.pohniMickem = function() {
 	}
 	mic.posX += mic.smerX;
 	mic.posY += mic.smerY;
+	if (mic.posX > hra.hriste.sirka/2 - 10 &&
+		mic.posX < hra.hriste.sirka/2 + 10) {
+		pocetOdrazu = 0;
+	}
 	hra.vykresli(mic);
 };
 
@@ -254,7 +264,7 @@ hra.hraj = function(){
 
 hra.zmenStav = function(){
 	hra.odstartovana = !hra.odstartovana;
-	startTlacitko.innerHTML = hra.odstartovana ? "Stop" : "Stopnuto!";
+	startTlacitko.innerHTML = hra.odstartovana ? "Stop" : "Stopnuto";
 	if (hra.odstartovana) {
 		hra.interval = setInterval (hra.hraj, 1);
 	} else {
@@ -267,7 +277,7 @@ hra.restart = function() { // vse odznovu
 		clearInterval (hra.interval);
 		hra.odstartovana = false;
 	}
-	startTlacitko.innerHTML = "Start!";
+	startTlacitko.innerHTML = "Start";
 	hra.skore1.nastav(0);
 	hra.skore2.nastav(0);
 	hra.vratNaZacatek(hra.micek);
@@ -277,7 +287,7 @@ hra.restart = function() { // vse odznovu
 
 hra.zapojAI1 = function () {
 	hra.ai1 = !hra.ai1;
-	ai1Tlacitko.innerHTML = hra.ai1 ? "Vrať hráče 1<br>do hry!" : "Zapni počítač místo hráče 1";
+	ai1Tlacitko.innerHTML = hra.ai1 ? "Vrať hráče 1<br>do hry" : "Zapni počítač místo hráče 1";
 	let hrac = document.getElementById("hrac1");
 	let skore = document.getElementById("skore1");
 	if (hra.ai1) {
@@ -293,7 +303,7 @@ hra.zapojAI1 = function () {
 
 hra.zapojAI2 = function () {
 	hra.ai2 = !hra.ai2;
-	ai2Tlacitko.innerHTML = hra.ai2 ? "Vrať hráče 2<br>do hry!" : "Zapni počítač místo hráče 2";
+	ai2Tlacitko.innerHTML = hra.ai2 ? "Vrať hráče 2<br>do hry" : "Zapni počítač místo hráče 2";
 	let hrac = document.getElementById("hrac2");
 	let skore = document.getElementById("skore2");
 	if (hra.ai2) {
