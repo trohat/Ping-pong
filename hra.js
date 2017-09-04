@@ -1,36 +1,27 @@
-const HRAJEM = true;
-// testovaci konstanta
-
 const SIRKA = 45;
-// kam az testovat sirku palky 
+// kam az testovat sirku palky pri odrazu micku 
 // (odviji se od max rychlosti micku)
 
-const POCX = 3; // pocatecni rychlost X
-const POCY = 0; // pocatecni rychlost Y
+const POCX = 3; // pocatecni rychlost micku smer X
+const POCY = 0; // pocatecni rychlost micku smer Y
 
-//var pocetOdrazu = 0;
-
-var hra = {
+let hra = {
 
 	micek: {
 		rychlost: Math.sqrt(POCX**2 + POCY**2),
 		smerX: Math.random() > 0.5 ? -POCX : POCX,
 		smerY: Math.random() > 0.5 ? -POCY : POCY,
 
-		odraz (palka) {
+		odraz (palka) { // vypocet, jak se ma micek odrazit od palky
 			let stredM = this.posY + this.vyska/2;
 			let vrsekP = palka.posY + palka.vyska + this.vyska/2;
 			let stredP = palka.posY + palka.vyska/2; 
-			let uhel = (stredP - stredM) / (vrsekP - stredP);
-			uhel *= 75;
-			console.log (uhel);
-			uhel = uhel * Math.PI / 180;
+			let uhel = (stredP - stredM) / (vrsekP - stredP); //vypocet uhlu odrazu
+			uhel *= 75; // max uhel odrazu = 75 stupnu
+			uhel = uhel * Math.PI / 180; // prevod na radiany
 			this.smerX = Math.cos(uhel) * this.rychlost;
 			this.smerY = Math.sin(uhel) * this.rychlost;
-			this.smerY = - this.smerY; // kvuli logice v goniometrii je tohle az na konci
-			//pocetOdrazu++;
-			//console.log (pocetOdrazu);
-			//if (pocetOdrazu>1) alert (pocetOdrazu);
+			this.smerY = - this.smerY; // spravne nastaveni smeru - kvuli logice v goniometrii je to az na konci
 		}
 	},
 
@@ -89,14 +80,10 @@ hra.pohniMickem = function() {
 		mic.smerX > 0 )) &&		
 		mic.posY + mic.vyska > palka1.posY &&
 		mic.posY < palka1.posY + palka1.vyska) { 
-		mic.odraz(palka1);
+		mic.odraz(palka1);  // odraz od palky 1
 	} else if (mic.posX < 0) {
-		if (HRAJEM) {   //vymaz (proto to neni uvnitr odsazene)
 		hra.skore2.nastav (++hra.skore2.hodnota);
-		hra.vratNaZacatek(mic);
-		} else { // vymaz
-			mic.smerX = -mic.smerX; // vymaz
-		} // vymaz
+		hra.vratNaZacatek(mic); // leva zed (novy mic + zvyseni skore)
 	}	
 	if (((mic.posX + mic.sirka > palka2.posX &&
 		mic.posX + mic.sirka <= palka2.posX + SIRKA &&
@@ -106,32 +93,24 @@ hra.pohniMickem = function() {
 		mic.smerX < 0 )) &&		
 		mic.posY + mic.vyska > palka2.posY &&
 		mic.posY < palka2.posY + palka2.vyska) {  
-		mic.odraz(palka2);
-		mic.smerX = -mic.smerX; 
+		mic.odraz(palka2); // odraz od palky 2
+		mic.smerX = -mic.smerX; // smer bude opacny nez vysel z goniometriceho vypoctu
 	} else if (mic.posX + mic.sirka > hra.hriste.sirka) { 
-		if (HRAJEM) {   //vymaz
 		hra.skore1.nastav (++hra.skore1.hodnota);
-		hra.vratNaZacatek(mic);
-		} else { // vymaz
-			mic.smerX = -mic.smerX; // vymaz
-		} // vymaz
+		hra.vratNaZacatek(mic); // prava zed (novy mic + zvyseni skore)
 	}
-	if (mic.posY < 0) { 
+	if (mic.posY < 0) { // horni zed
 		mic.smerY = -mic.smerY;
 	}
-	if (mic.posY + mic.vyska > hra.hriste.vyska) { 
+	if (mic.posY + mic.vyska > hra.hriste.vyska) { // dolni zed
 		mic.smerY = -mic.smerY;
 	}
 	mic.posX += mic.smerX;
 	mic.posY += mic.smerY;
-	/*if (mic.posX > hra.hriste.sirka/2 - 10 &&
-		mic.posX < hra.hriste.sirka/2 + 10) {
-		pocetOdrazu = 0;
-	}*/
 	hra.vykresli(mic);
 };
 
-hra.pouzijAI1 = function () {
+hra.pouzijAI1 = function () { // umela inteligence pro palku 1
 	const pulPalky = hra.palka1.vyska / 2;
 	const pulHriste = hra.hriste.sirka / 2;
 	if (hra.micek.posY + hra.micek.vyska < hra.palka1.posY + pulPalky &&
@@ -150,7 +129,7 @@ hra.pouzijAI1 = function () {
 	}
 };
 
-hra.pouzijAI2 = function () {
+hra.pouzijAI2 = function () { // umela inteligence pro palku 2
 	const pulPalky = hra.palka2.vyska / 2;
 	const pulHriste = hra.hriste.sirka / 2;
 	if (hra.micek.posY + hra.micek.vyska < hra.palka2.posY + pulPalky
@@ -171,66 +150,38 @@ hra.pohniPalkami = function() {
 	const klavesy = hra.klavesy,
 		  palka1 = hra.palka1,
 		  palka2 = hra.palka2;
-	if (klavesy["w"] || klavesy["W"]) { 
+	if (klavesy["w"] || klavesy["W"]) { // leva palka nahoru
 		palka1.posY -= 2;
 		if (palka1.posY < 0) { 
 			palka1.posY = 0; 
 		}
 		palka1.ja.style.top = palka1.posY+"px";
 	}
-	if (klavesy["s"] || klavesy["S"]) { 
+	if (klavesy["s"] || klavesy["S"]) {    // leva palka dolu
 		palka1.posY += 2;
 		if (palka1.posY > hra.hriste.vyska - palka1.vyska) { 
 			palka1.posY = hra.hriste.vyska - palka1.vyska; 
 		}
 		palka1.ja.style.top = palka1.posY+"px";
 	}
-	/*if (klavesy["a"] || klavesy["A"]) { 
-		palka1.posX -= 2;
-		if (palka1.posX < 0) { 
-			palka1.posX = 0; 
-		}
-		palka1.ja.style.left = palka1.posX+"px";
-	}
-	if (klavesy["d"] || klavesy["D"]) { 
-		palka1.posX += 2;
-		if (palka1.posX > hra.hriste.sirka - palka1.sirka) { 
-			palka1.posX = hra.hriste.sirka - palka1.sirka; 
-		}
-		palka1.ja.style.left = palka1.posX+"px";
-	}*/
-	if (klavesy["ArrowUp"]) { 
+	if (klavesy["ArrowUp"]) { // prava palka nahoru
 		palka2.posY -= 2;
 		if (palka2.posY < 0) {
 			palka2.posY = 0; 
 		}
 		palka2.ja.style.top = palka2.posY+"px";
 	}
-	if (klavesy["ArrowDown"]) { 
+	if (klavesy["ArrowDown"]) { // prava palka dolu
 		palka2.posY += 2;
 		if (palka2.posY > hra.hriste.vyska - palka2.vyska) {
 			palka2.posY = hra.hriste.vyska - palka2.vyska; 
 		}
 		palka2.ja.style.top = palka2.posY+"px";
 	}
-	/*if (klavesy["ArrowLeft"]) { 
-		palka2.posX -= 2;
-		if (palka2.posX < 0) {
-			palka2.posX = 0; 
-		}
-		palka2.ja.style.left = palka2.posX+"px";
-	}
-	if (klavesy["ArrowRight"]) { 
-		palka2.posX += 2;
-		if (palka2.posX > hra.hriste.sirka - palka2.sirka) {
-			palka2.posX = hra.hriste.sirka - palka2.sirka; 
-		}
-		palka2.ja.style.left = palka2.posX+"px";
-	}*/
 };
 
-function nastavPoziciObjektu (nepouzita_promenna_objekt, idcko) {   
-	var objekt = hra[idcko]; // objekt nakonec zvladnu precist pomoci idcka, takze nemusel byt v parametrech
+function nastavPoziciObjektu (idcko) {   
+	const objekt = hra[idcko]; 
 	objekt.ja = document.getElementById(idcko),
 	objekt.posX = objekt.ja.offsetLeft;
 	objekt.posY = objekt.ja.offsetTop;
@@ -238,20 +189,21 @@ function nastavPoziciObjektu (nepouzita_promenna_objekt, idcko) {
 	objekt.vyska = objekt.ja.offsetHeight;
 	objekt.startPosX = objekt.posX;
 	objekt.startPosY = objekt.posY;
-} // pozice micku a palek
+} // nastaveni uvodnich rozmeru pro micek a palky
 // idcko je cesky vyraz pro slovo id - cestina mi pomaha vyhnout se klicovym slovum
 
 function nastavPoziciHriste(hriste) {
 	hriste.ja = document.getElementById("hriste");
 	hriste.sirka = hriste.ja.clientWidth;
 	hriste.vyska = hriste.ja.clientHeight;
-} // potrebuje samostatnou funkci, protoze pouziva clientWidth misto offsetWidth
+} // nastaveni uvodnich rozmeru pro hriste
+// potrebuje samostatnou funkci, protoze pouziva clientWidth misto offsetWidth
 
 hra.zacniHru = function() {
 	nastavPoziciHriste (hra.hriste);
-	nastavPoziciObjektu (hra.micek, "micek");
-	nastavPoziciObjektu (hra.palka1, "palka1");
-	nastavPoziciObjektu (hra.palka2, "palka2");
+	nastavPoziciObjektu ("micek");
+	nastavPoziciObjektu ("palka1");
+	nastavPoziciObjektu ("palka2");
 }
 
 hra.hraj = function(){
@@ -259,7 +211,6 @@ hra.hraj = function(){
 	if (hra.ai1) { hra.pouzijAI1(); }
 	if (hra.ai2) { hra.pouzijAI2(); }
 	hra.pohniPalkami();
-	if (hra.klavesy["x"]) { hra.restart(); hra.zmenStav(); } // testovaci radek
 }; // cyklus spusteny setIntervalem ve funkci zmenStav
 
 hra.zmenStav = function(){
@@ -285,7 +236,7 @@ hra.restart = function() { // vse odznovu
 	hra.vratNaZacatek(hra.palka2);
 }
 
-hra.zapojAI1 = function () {
+hra.zapojAI1 = function () {  
 	hra.ai1 = !hra.ai1;
 	ai1Tlacitko.innerHTML = hra.ai1 ? "Vrať hráče 1<br>do hry" : "Zapni počítač místo hráče 1";
 	let hrac = document.getElementById("hrac1");
@@ -301,7 +252,7 @@ hra.zapojAI1 = function () {
 	}	
 };
 
-hra.zapojAI2 = function () {
+hra.zapojAI2 = function () {  
 	hra.ai2 = !hra.ai2;
 	ai2Tlacitko.innerHTML = hra.ai2 ? "Vrať hráče 2<br>do hry" : "Zapni počítač místo hráče 2";
 	let hrac = document.getElementById("hrac2");
@@ -322,10 +273,10 @@ const resetTlacitko = document.getElementById("reset");
 const ai1Tlacitko = document.getElementById("ai1");
 const ai2Tlacitko = document.getElementById("ai2");
 
-startTlacitko.addEventListener("click", hra.zmenStav);
-resetTlacitko.addEventListener("click", hra.restart);
-ai1Tlacitko.addEventListener("click", hra.zapojAI1);
-ai2Tlacitko.addEventListener("click", hra.zapojAI2);
+startTlacitko.addEventListener("click", hra.zmenStav); // start nebo stop
+resetTlacitko.addEventListener("click", hra.restart); // restart cele hry
+ai1Tlacitko.addEventListener("click", hra.zapojAI1);  // umela inteligence pro palku 1
+ai2Tlacitko.addEventListener("click", hra.zapojAI2);  // umela inteligence pro palku 2
 
 
 document.addEventListener("keydown", function(event) {
@@ -337,7 +288,3 @@ document.addEventListener("keyup", function(event) {
 });
 
 hra.zacniHru();
-
-//asi by to šlo jeste lepe pospojovat objektove nebo pomocí ES6 trid (napr. bych vyuzil dedicnost -
-//nastavPozici by mohla byt metoda predka a ostatni by z ní dedili, a treba hriste by si ji predefinovalo
-//ale vzhledem k rozsahu programu mi prijde tohle fajn, protože je to prehledne

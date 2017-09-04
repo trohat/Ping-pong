@@ -7,10 +7,6 @@
 	margin-bottom: 30px;
 	text-shadow: 1px 1px gainsboro;
 }
-/*
-#nadpis:active {
-	color: green;
-}*/
 
 body {
   background: linear-gradient(to right, darkgoldenrod,darkkhaki,darkgoldenrod);
@@ -45,7 +41,6 @@ button {
 	margin-bottom: 70px;
 	background: linear-gradient(175deg, teal, #005050);
 	border: 8px teal outset;
-	/*transition: all 0.3s;*/
 }
 
 #start:active {
@@ -104,7 +99,7 @@ button {
 	display: flex;
 	flex-direction: column;
 	width: 1000px;
-	height: /*650px;*/ 700px;
+	height: 700px;
 	border: 1px solid black;
 	background-color: yellowgreen;
 	position: relative;
@@ -134,9 +129,6 @@ button {
 	position: relative;
 	border: 1px solid black;
 	background-color: floralwhite;
-	/*width: 400px;
-	height: 200px; testovaci rozmery */
-	/*height: 540px;*/
 	height: 590px;
 	margin: 10px;
 }
@@ -156,10 +148,8 @@ button {
 	position: absolute;
 	background: darkorange;
 	top: calc(50% - 70px);
-	/*top: 100px; /*ladeni*/
 	width: 15px;
 	height: 140px;
-	/*height: 350px; /*ladeni*/	
 	border: 5px darkgoldenrod outset;
 }
 
