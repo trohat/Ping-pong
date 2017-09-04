@@ -8,7 +8,7 @@ const SIRKA = 45;
 const POCX = 3; // pocatecni rychlost X
 const POCY = 0; // pocatecni rychlost Y
 
-var pocetOdrazu = 0;
+//var pocetOdrazu = 0;
 
 var hra = {
 
@@ -28,9 +28,9 @@ var hra = {
 			this.smerX = Math.cos(uhel) * this.rychlost;
 			this.smerY = Math.sin(uhel) * this.rychlost;
 			this.smerY = - this.smerY; // kvuli logice v goniometrii je tohle az na konci
-			pocetOdrazu++;
-			console.log (pocetOdrazu);
-			if (pocetOdrazu>1) alert (pocetOdrazu);
+			//pocetOdrazu++;
+			//console.log (pocetOdrazu);
+			//if (pocetOdrazu>1) alert (pocetOdrazu);
 		}
 	},
 
@@ -124,10 +124,10 @@ hra.pohniMickem = function() {
 	}
 	mic.posX += mic.smerX;
 	mic.posY += mic.smerY;
-	if (mic.posX > hra.hriste.sirka/2 - 10 &&
+	/*if (mic.posX > hra.hriste.sirka/2 - 10 &&
 		mic.posX < hra.hriste.sirka/2 + 10) {
 		pocetOdrazu = 0;
-	}
+	}*/
 	hra.vykresli(mic);
 };
 
