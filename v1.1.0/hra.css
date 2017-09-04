@@ -1,0 +1,162 @@
+#nadpis {
+	text-align: center;
+	color: black;
+	background: linear-gradient(to right,darkgoldenrod,darkseagreen, darkgoldenrod);
+	padding: 3px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-shadow: 1px 1px gainsboro;
+}
+
+body {
+  background: linear-gradient(to right, darkgoldenrod,darkkhaki,darkgoldenrod);
+ }
+
+aside {
+	margin-left: 30px;
+	text-align: center;
+}
+
+aside button {
+	margin-left: 32px;
+}
+
+aside h3 {
+	padding-left: 30px;
+}
+
+aside li {
+	list-style-type: none;	
+}
+
+button {
+	width: 150px;
+	height: 50px;
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+#start {
+	margin-top: 10px;
+	margin-bottom: 70px;
+	background: linear-gradient(175deg, teal, #005050);
+	border: 8px teal outset;
+}
+
+#start:active {
+	border-style: inset;
+	background: linear-gradient(355deg, teal, #005050);
+}
+
+#reset {
+	margin-top: 20px;
+	background: linear-gradient(160deg, #65401a, #412911);
+	border: 8px #65401a outset;
+}
+
+#reset:active {
+	border-style: inset;
+	background: linear-gradient(340deg, #65401a, #412911);
+}
+
+#ai1, #ai2 {
+	font-size: 1em;
+	padding-top: 3px;
+	padding-bottom: 40px;
+	background: linear-gradient(to bottom right, orange, darkorange);
+	border: 8px orange outset;
+}
+
+#ai1 {
+	margin-top: 140px;
+}
+
+#ai1:active, #ai2:active {
+	border-style: inset;
+	background: linear-gradient(to top left, orange, darkorange);
+}
+
+@media (max-width: 1248px) {
+	#start {
+		margin-bottom: 10px;
+	}
+
+	#ai1, #reset {
+		margin-top: 10px;
+	}
+}
+
+.podtrhni {
+	text-decoration: underline;
+}
+
+#plocha {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#hra {
+	display: flex;
+	flex-direction: column;
+	width: 1000px;
+	height: 700px;
+	border: 1px solid black;
+	background-color: yellowgreen;
+	position: relative;
+}
+
+#tabule {
+	display: flex;
+	justify-content: space-between;
+}
+
+.hrac {
+	border: 1px solid black;
+	background-color: lightyellow;
+	width: 200px;
+	height: 74px;
+	margin: 10px 10px 0 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#skore1, #skore2 {
+	font-size: 300%;
+}
+
+#hriste {
+	position: relative;
+	border: 1px solid black;
+	background-color: floralwhite;
+	height: 590px;
+	margin: 10px;
+}
+
+#micek {
+	background-color: saddlebrown;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	left: 50%;
+	top: 50%;
+	border-radius: 50%;
+
+}
+
+#palka1, #palka2 {
+	position: absolute;
+	background: darkorange;
+	top: calc(50% - 70px);
+	width: 15px;
+	height: 140px;
+	border: 5px darkgoldenrod outset;
+}
+
+#palka1 {
+	left: 50px;
+}
+
+#palka2 {
+	right: 50px;
+}

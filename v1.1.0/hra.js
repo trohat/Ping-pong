@@ -262,7 +262,7 @@ hra.zapojAI2 = function () {
 	if (hra.ai2) {
 		hrac.innerHTML = "Počítač"
 		hrac.style.color = "grey";
-		skore.style.color = "grey";
+		skore.style.color = "grey";		
 	} else {
 		hrac.innerHTML = "Hráč 2"
 		hrac.style.color = "black";
