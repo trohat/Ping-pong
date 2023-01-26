@@ -48,7 +48,7 @@ let hra = {
 		}
 	},
 	interval: 0,
-	ostartovana: false,
+	odstartovana: false,
 	ai1: false,
 	ai2: false, 
 
@@ -61,7 +61,7 @@ let hra = {
 			objekt.posX = objekt.startPosX;
 			objekt.posY = objekt.startPosY;
 			if ("smerX" in objekt) {
-				objekt.smerX = Math.random() > 0.5 ? -POCX : POCX; 
+				objekt.smerX = Math.random() > 0.5 ? -POCX : POCX;
 				objekt.smerY = Math.random() > 0.5 ? -POCY : POCY;
 			}
 			hra.vykresli(objekt);

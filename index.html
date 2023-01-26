@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+	<meta charset="UTF-8">
+	<title>Ping pong</title>
+	<link rel="stylesheet" href="hra.css">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+	<header>
+		<h1 id="nadpis">PING-PONG</h1>
+	</header>
+	<div id="plocha">
+		<section id="hra">
+			<div id="tabule">
+				<div class="hrac">
+					<div id="hrac1">Hráč 1</div>
+					<div id="skore1">0</div>
+				</div>
+				<div class="hrac">
+					<div id="hrac2">Hráč 2</div>
+					<div id="skore2">0</div>
+				</div>
+			</div>
+			<div id="hriste">
+				<div id="palka1"></div>
+				<div id="palka2"></div>
+				<div id="micek"></div>
+			</div>
+		</section>
+		<aside id="ovladani">
+			<button id="start" autofocus>Start</button>
+			<p id="napoveda">
+				<h3>Ovládání:</h3>
+				<ul>
+					<span class="podtrhni">Hráč 1:</span>
+					<li>Nahoru - W</li>
+					<li>Dolů - S</li>
+				</ul>
+				<ul>
+					<span class="podtrhni">Hráč 2:</span>
+					<li>Nahoru - šipka nahoru</li>
+					<li>Dolů - šipka dolů</li>
+				</ul>
+			</p>
+			<button id="ai1">Zapni počítač místo hráče 1</button>
+			<p></p>
+			<button id="ai2">Zapni počítač místo hráče 2</button>
+			<p></p>
+			<button id="reset">Reset</button>
+		</aside>
+	</div>
+	<p>
+		&copy; Petr Sedláček
+	</p>
+	<script src="hra.js"></script>
+</body>
+</html>

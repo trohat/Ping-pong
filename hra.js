@@ -4,12 +4,12 @@ const SIRKA = 45;
 
 const POCX = 3; // pocatecni rychlost micku smer X
 const POCY = 0; // pocatecni rychlost micku smer Y
-// konstanty bohuzel nelze nastavit uvnitr trid
+// konstanty bohuzel nelze nastavit uvnitr trid - ale logicky patri vsechny tri do tridy Micek
 
 class ObjektNaHristi {
 	constructor(id) {
 		this.ja = document.getElementById(id),
-		this.posX = this.ja.offsetLeft;
+			this.posX = this.ja.offsetLeft;
 		this.posY = this.ja.offsetTop;
 		this.sirka = this.ja.offsetWidth;
 		this.vyska = this.ja.offsetHeight;
@@ -18,34 +18,35 @@ class ObjektNaHristi {
 	} // nastaveni uvodnich rozmeru pro micek a palky
 
 	vykresli() {
-		this.ja.style.left = this.posX+"px"; 
-		this.ja.style.top = this.posY+"px";
+		this.ja.style.left = `${this.posX}px`;
+		this.ja.style.top = `${this.posY}px`;
 	}
 
 	vratNaZacatek() {
-			this.posX = this.startPosX;
-			this.posY = this.startPosY;
-			if ("smerX" in this) {
+		this.posX = this.startPosX;
+		this.posY = this.startPosY;
+		if ("smerX" in this) {
+			this.smerX = Math.random() > 0.5 ? -POCX : POCX;
 				this.smerX = Math.random() > 0.5 ? -POCX : POCX; 
-				this.smerY = Math.random() > 0.5 ? -POCY : POCY;
-			}
-			this.vykresli();
+			this.smerX = Math.random() > 0.5 ? -POCX : POCX;
+			this.smerY = Math.random() > 0.5 ? -POCY : POCY;
+		}
+		this.vykresli();
 	}
 }
 
 class Micek extends ObjektNaHristi {
 	constructor(id) {
-		super (id);
-		this.rychlost = Math.sqrt(POCX**2 + POCY**2);
+		super(id);
+		this.rychlost = Math.sqrt(POCX ** 2 + POCY ** 2);
 		this.smerX = Math.random() > 0.5 ? -POCX : POCX;
 		this.smerY = Math.random() > 0.5 ? -POCY : POCY;
-		console.log("konstruktor - mic");
 	}
 
 	odraz(palka) {      
-		const stredM = this.posY + this.vyska/2;
-		const vrsekP = palka.posY + palka.vyska + this.vyska/2;
-		const stredP = palka.posY + palka.vyska/2; 
+		const stredM = this.posY + this.vyska / 2;
+		const vrsekP = palka.posY + palka.vyska + this.vyska / 2;
+		const stredP = palka.posY + palka.vyska / 2;
 		let uhel = (stredP - stredM) / (vrsekP - stredP); //vypocet uhlu odrazu
 		uhel *= 75; // max uhel odrazu = 75 stupnu
 		uhel = uhel * Math.PI / 180; // prevod na radiany
@@ -57,29 +58,29 @@ class Micek extends ObjektNaHristi {
 	pohniMickem() {
 		if (((this.posX < palka1.posX + palka1.sirka &&
 			this.posX >= palka1.posX + palka1.sirka - SIRKA &&
-			this.smerX < 0 ) || (
-			this.posX + this.sirka > palka1.posX &&
-			this.posX + this.sirka <= palka1.posX + SIRKA &&
-			this.smerX > 0 )) &&		
+			this.smerX < 0) || (
+				this.posX + this.sirka > palka1.posX &&
+				this.posX + this.sirka <= palka1.posX + SIRKA &&
+				this.smerX > 0)) &&
 			this.posY + this.vyska > palka1.posY &&
-			this.posY < palka1.posY + palka1.vyska) { 
+			this.posY < palka1.posY + palka1.vyska) {
 			this.odraz(palka1);  // odraz od palky 1
 		} else if (this.posX < 0) {
-			hra.skore2.nastavSkore (++hra.skore2.hodnota);
+			hra.skore2.nastavSkore(++hra.skore2.hodnota);
 			this.vratNaZacatek(); // leva zed (novy mic + zvyseni skore)
-		}	
+		}
 		if (((this.posX + this.sirka > palka2.posX &&
-				this.posX + this.sirka <= palka2.posX + SIRKA &&
-				this.smerX > 0 ) || (
+			this.posX + this.sirka <= palka2.posX + SIRKA &&
+			this.smerX > 0) || (
 				this.posX < palka2.posX + palka2.sirka &&
-			this.posX >= palka2.posX + palka2.sirka - SIRKA &&
-			this.smerX < 0 )) &&		
+				this.posX >= palka2.posX + palka2.sirka - SIRKA &&
+				this.smerX < 0)) &&
 			this.posY + this.vyska > palka2.posY &&
-			this.posY < palka2.posY + palka2.vyska) {  
+			this.posY < palka2.posY + palka2.vyska) {
 			this.odraz(palka2); // odraz od palky 2
 			this.smerX = -this.smerX; // smer bude opacny nez vysel z goniometriceho vypoctu
-		} else if (this.posX + this.sirka > hriste.sirka) { 
-			hra.skore1.nastavSkore (++hra.skore1.hodnota);
+		} else if (this.posX + this.sirka > hriste.sirka) {
+			hra.skore1.nastavSkore(++hra.skore1.hodnota);
 			this.vratNaZacatek(); // prava zed (novy mic + zvyseni skore)
 		}
 		if (this.posY < 0) { // horni zed
@@ -96,35 +97,34 @@ class Micek extends ObjektNaHristi {
 
 class Palka extends ObjektNaHristi {
 	constructor(id, klavesaNahoru, klavesaDolu) {
-		super (id);
+		super(id);
 		this.klavesaNahoru = klavesaNahoru;
-		this.klavesaDolu = klavesaDolu;		
+		this.klavesaDolu = klavesaDolu;
 		this.klavesaNahoru1 = (this.klavesaNahoru.length === 1) ? this.klavesaNahoru.toUpperCase() : null;
 		this.klavesaDolu1 = (this.klavesaDolu.length === 1) ? this.klavesaDolu.toUpperCase() : null;
-		console.log(this.klavesaNahoru, this.klavesaDolu, this.klavesaNahoru1, this.klavesaDolu1);
 	}
 
 	vykresli() {
-		this.ja.style.top = this.posY+"px";
+		this.ja.style.top = `${this.posY}px`;
 	}
 
 	pohniPalkou() {
 		const klavesy = hra.klavesy;
 		if (klavesy[this.klavesaNahoru] || klavesy[this.klavesaNahoru1]) { // palka jde nahoru
 			this.posY -= 2;
-			if (this.posY < 0) { 
-				this.posY = 0; 
+			if (this.posY < 0) {
+				this.posY = 0;
 			}
 			this.vykresli();
 		}
 		if (klavesy[this.klavesaDolu] || klavesy[this.klavesaDolu1]) {    // palka jde dolu
 			this.posY += 2;
-			if (this.posY > hriste.vyska - this.vyska) { 
-				this.posY = hriste.vyska - this.vyska; 
+			if (this.posY > hriste.vyska - this.vyska) {
+				this.posY = hriste.vyska - this.vyska;
 			}
 			this.vykresli();
 		}
-	}	
+	}
 }
 
 class AI { // umela inteligence
@@ -137,22 +137,20 @@ class AI { // umela inteligence
 
 	zapniAI() {  // nebo vypni, je to spis "toggle" funkce
 		this.zapnuta = !this.zapnuta;
-		aiTlacitka[this.id-1].tlacitko.innerHTML = this.zapnuta ? 
-					("Vrať hráče "+this.id+"<br>do hry") : ("Zapni počítač místo hráče "+this.id);
-		let hrac = document.getElementById("hrac" + this.id);
-		let skore = document.getElementById("skore" + this.id);
+		aiTlacitka[this.id - 1].tlacitko.innerHTML = this.zapnuta ?
+			`Vrať hráče ${this.id} <br>do hry` : `Zapni počítač místo hráče ${this.id}`;
+		let hrac = document.getElementById(`hrac${this.id}`);
+		let skore = document.getElementById(`skore${this.id}`);
 		if (this.zapnuta) {
 			hrac.innerHTML = "Počítač"
 			hrac.style.color = "grey";
 			skore.style.color = "grey";
 		} else {
-			hrac.innerHTML = "Hráč " + this.id;
+			hrac.innerHTML = `Hráč ${this.id}`;
 			hrac.style.color = "black";
 			skore.style.color = "black";
-			console.log (hra.klavesy);	
 			hra.klavesy[this.palka.klavesaNahoru] = false;
 			hra.klavesy[this.palka.klavesaDolu] = false;
-			console.log (hra.klavesy);	
 		}
 	}
 
@@ -184,7 +182,6 @@ class Hriste {
 		this.ja = document.getElementById(id);
 		this.sirka = this.ja.clientWidth;
 		this.vyska = this.ja.clientHeight;
-		console.log("konstruktor - hriste");
 	} // nastaveni uvodnich rozmeru pro hriste
 }
 
@@ -192,7 +189,7 @@ class Skore {
 	constructor(id) {
 		this.id = id;
 		this.hodnota = 0;
-		this.ja = document.getElementById("skore" + this.id);
+		this.ja = document.getElementById(`skore${this.id}`);
 	}
 
 	nastavSkore(kolik) {
@@ -202,7 +199,7 @@ class Skore {
 }
 
 class Hra {
-	constructor () {
+	constructor() {
 		this.skore1 = new Skore(1);
 		this.skore2 = new Skore(2);
 		this.klavesy = {};
@@ -210,7 +207,17 @@ class Hra {
 		this.odstartovana = false;
 		this.zmenStav = this.zmenStav.bind(this);
 		this.restart = this.restart.bind(this);
-	} 
+	}
+
+	zmenStav() {
+		this.odstartovana = !this.odstartovana;
+		startTlacitko.tlacitko.innerHTML = this.odstartovana ? "Stop" : "Stopnuto";
+		if (this.odstartovana) {
+			this.interval = setInterval(this.hraj, 1);
+		} else {
+			clearInterval(this.interval);
+		}
+	}; // odstartuje hru - nebo ji zastavi, pokud je uz odstartovana - opet "toggle" funkce
 
 	hraj() {
 		micek.pohniMickem();
@@ -220,19 +227,9 @@ class Hra {
 		palka2.pohniPalkou();
 	} // cyklus spusteny setIntervalem ve funkci zmenStav
 
-	zmenStav() {
-		this.odstartovana = !this.odstartovana;
-		startTlacitko.tlacitko.innerHTML = this.odstartovana ? "Stop" : "Stopnuto";
-		if (this.odstartovana) {
-			this.interval = setInterval (this.hraj, 1);
-		} else {
-			clearInterval(this.interval);
-		}
-	}; // odstartuje hru - nebo ji zastavi, pokud je uz odstartovana - opet "toggle" funkce
-
 	restart() { // vse odznovu
 		if (this.odstartovana) {
-			clearInterval (this.interval);
+			clearInterval(this.interval);
 			this.odstartovana = false;
 		}
 		startTlacitko.tlacitko.innerHTML = "Start";
@@ -245,7 +242,7 @@ class Hra {
 }
 
 class Tlacitko {
-	constructor (id, funkce) {
+	constructor(id, funkce) {
 		this.tlacitko = document.getElementById(id);
 		this.tlacitko.addEventListener("click", funkce);
 	}
@@ -260,14 +257,14 @@ const palka2 = new Palka("palka2", "ArrowUp", "ArrowDown");
 const ai1 = new AI(1, palka1);
 const ai2 = new AI(2, palka2);
 
-const startTlacitko = new Tlacitko ("start", hra.zmenStav); // start nebo stop
-const resetTlacitko = new Tlacitko ("reset", hra.restarts); // restart cele hry
-const aiTlacitka = [new Tlacitko ("ai1", ai1.zapniAI),
-					new Tlacitko ("ai2", ai2.zapniAI)];  // umela inteligence pro palky 1 a 2
+const startTlacitko = new Tlacitko("start", hra.zmenStav); // start nebo stop
+const resetTlacitko = new Tlacitko("reset", hra.restart); // restart cele hry
+const aiTlacitka = [new Tlacitko("ai1", ai1.zapniAI),
+new Tlacitko("ai2", ai2.zapniAI)];  // umela inteligence pro palky 1 a 2
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", (event) => {
 	hra.klavesy[event.key] = true;
 });
-document.addEventListener("keyup", function(event) {
+document.addEventListener("keyup", (event) => {
 	hra.klavesy[event.key] = false;
 });
